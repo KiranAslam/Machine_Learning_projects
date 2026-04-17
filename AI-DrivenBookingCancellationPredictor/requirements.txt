@@ -1,0 +1,9 @@
+pandas
+numpy
+scikit-learn
+category_encoders
+imbalanced-learn
+streamlit
+joblib
+matplotlib
+seaborn
