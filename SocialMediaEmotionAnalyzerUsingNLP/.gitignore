@@ -1,0 +1,12 @@
+
+myenv/
+venv/
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/
+.streamlit/
+Models/*.pkl
+Data/*.csv

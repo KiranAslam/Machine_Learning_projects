@@ -1,0 +1,30 @@
+# Social Media Emotion Analyzer
+
+Emotion Analyzer is a professional-grade NLP (Natural Language Processing) tool designed to analyze emotions in social media text. Using a **Linear SVM (Support Vector Machine)** model, it classifies text into three categories: **Positive, Negative, and Neutral** with high precision.
+
+##  Performance Highlights
+* **Accuracy:** 93.32% (Optimized)
+* **Classes:** Positive, Negative, Neutral
+* **Model:** Linear SVM with TF-IDF Vectorization (N-gram range 1-3)
+
+##  Key Features
+- **Context-Aware Cleaning:** Handles negations like "not happy" $\rightarrow$ `not_happy` to maintain sentiment accuracy.
+- **Emoji Support:** Converts common emoticons (e.g., `:)`, `:(`) into text features.
+- **Advanced Preprocessing:** Uses Lemmatization and custom stop-word filtering.
+- **Interactive Dashboard:** Built with Streamlit for real-time sentiment analysis.
+
+##  Tech Stack
+- **Language:** Python
+- **Libraries:** Scikit-Learn, Pandas, NLTK, Joblib, Streamlit, Plotly
+- **Algorithm:** Linear Support Vector Machine (LinearSVC)
+
+##  Project Structure
+```text
+├── Data/                 # Dataset files
+├── Models/               # Saved .pkl files (Model & Vectorizer)
+├── src/
+│   ├── preprocessing.py  # Text cleaning logic
+│   ├── model_training.py # Comparison & training script
+├── app.py                # Streamlit Dashboard
+├── README.md             # Project documentation
+└── .gitignore            # Files to ignore in Git
