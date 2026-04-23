@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.abspath("src"))
 from src.preprocessing import preprocessing
-
+import nltk
 model = joblib.load('Models/best_emotion_model.pkl')
 vectorizer = joblib.load('Models/tfidf_vectorizer.pkl')
 
