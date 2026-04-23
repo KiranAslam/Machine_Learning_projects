@@ -6,7 +6,7 @@ import re
 import sys
 import os
 sys.path.append(os.path.abspath("src"))
-from preprocessing import preprocessing
+from src.preprocessing import preprocessing
 
 model = joblib.load('Models/best_emotion_model.pkl')
 vectorizer = joblib.load('Models/tfidf_vectorizer.pkl')
