@@ -1,0 +1,41 @@
+
+#MainMenu { visibility: hidden; }
+footer    { visibility: hidden; }
+header    { visibility: hidden; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #2E75B6; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #4DA3FF; }
+
+
+[data-baseweb="tab-list"] {
+    gap: 4px;
+}
+[data-baseweb="tab"] {
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+}
+
+
+[data-testid="stExpander"] summary {
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+}
+
+
+[data-testid="stFileUploader"] label {
+    font-family: 'Syne', sans-serif !important;
+}
+
+
+[data-testid="stDownloadButton"] > button {
+    background-color: #27AE60 !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+[data-testid="stDownloadButton"] > button:hover {
+    background-color: #219150 !important;
+}

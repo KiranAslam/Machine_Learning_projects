@@ -1,0 +1,45 @@
+#  Fake News Detector using Bidirectional LSTM
+
+This project is an text classification system that leverages **Deep Learning** to distinguish between authentic and fabricated news articles. 
+
+##  Why Bidirectional LSTM? 
+For this project, I chose a **Bidirectional Long Short-Term Memory (LSTM)** architecture. Unlike standard RNNs or unidirectional LSTMs, this approach offers:
+* **Dual-Context Learning:** The model processes text in both directions (forward and backward). This allows it to understand the context of a word based on both its preceding and succeeding words—crucial for catching subtle sarcasm or "clickbait" framing.
+* **Handling Long Sequences:** News articles can be long. LSTMs are designed to retain information over long sequences, ensuring the model doesn't "forget" the beginning of an article by the time it reaches the end.
+
+##  Project Workflow
+
+### 1. Data Preprocessing (`Preprocessing.py`)
+Raw text is noisy and cannot be fed directly into a Neural Network. I implemented a pipeline to clean the data:
+* **Regex Cleaning:** Removed special characters, numbers, and punctuation to focus on linguistic patterns.
+* **Stopwords Removal:** Eliminated common words (e.g., "the", "a", "is") that do not contribute to the sentiment or category of the news.
+* **Lemmatization:** Reduced words to their dictionary root form (e.g., "better" -> "good", "running" -> "run") to normalize the vocabulary.
+* **Tokenization & Padding:** Converted text into numeric sequences and used padding to ensure all inputs have a uniform length of 300 words.
+
+### 2. Model Architecture (`Model_training.py`)
+The model consists of several specialized layers:
+* **Embedding Layer:** Maps each word to a 128-dimensional vector space where similar words are placed closer together.
+* **Bidirectional LSTM:** A 64-unit layer to extract deep contextual features from the text.
+* **Regularization (Dropout):** Implemented Dropout layers (0.5 and 0.3) to prevent **Overfitting**, ensuring the model generalizes well to news it hasn't seen before.
+* **Early Stopping:** The training was optimized to stop as soon as the **Validation Loss** reached its minimum. This prevented the model from "memorizing" the training set.
+
+### 3. User Interface (`app.py`)
+Built with **Streamlit**, the dashboard provides an intuitive way for users to:
+* Paste any news article.
+* See a real-time prediction (Real or Fake).
+* View the confidence percentage of the model.
+
+## Performance Metrics
+* **Accuracy:** ~97.32%
+* **Best Weights:** Restored from Epoch 1 (to ensure maximum generalization).
+* **F1-Score:** High balance between Precision and Recall, meaning the model is equally good at identifying both Real and Fake news.
+
+##  Directory Structure
+```text
+├── Data/               # Raw and processed datasets (.csv, .npy)
+├── Models/             # Saved fake_news_lstm_model.h5 and tokenizer.pickle
+├── src/
+│   ├── Preprocessing.py # Script for text cleaning and tokenization
+│   ├── Model_training.py# Script for neural network training
+└── app.py               # Streamlit web application
+└── README.md            # Documentation
