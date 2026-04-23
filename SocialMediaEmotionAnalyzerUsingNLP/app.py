@@ -1,3 +1,4 @@
+import nltk
 import streamlit as st
 import joblib
 import numpy as np
@@ -5,7 +6,7 @@ import plotly.express as px
 import re
 import sys
 import os
-import nltk
+
 @st.cache_resource
 def load_nltk_data():
     try:
