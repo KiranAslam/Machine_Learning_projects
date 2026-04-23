@@ -1,0 +1,25 @@
+# DataVisualizer Pro
+
+A professional-grade, automated Exploratory Data Analysis (EDA) tool built with Python and Streamlit. This application transforms raw datasets into interactive visual dashboards while providing technical health audits and preprocessing recommendations.
+
+## Core Features
+
+* **Automated Data Audit:** Instant reporting on dataset dimensions, missing values, and duplicate rows.
+* **Imbalance Detection:** Real-time analysis of target variable distributions with automated alerts for minority class skewness.
+* **Intelligent Visualization Engine:** A rule-based plotting system that automatically selects the optimal chart type (Scatter, Box, Histogram, or Heatmap) based on feature dimensionality and data types.
+* **Expert Recommendations:** Actionable insights for data cleaning and modeling strategies based on detected data quality issues.
+* **Interactive Dark Interface:** A high-contrast, professional UI designed for technical environments.
+
+## Project Architecture
+
+The project follows a modular "separation of concerns" design:
+
+```text
+DataVisualizer/
+├── src/
+│   ├── analyzer.py     
+│   ├── loader.py      
+│   ├── visualizer.py   
+│   └── recommender.py  
+├── app.py              
+└── requirements.txt    
