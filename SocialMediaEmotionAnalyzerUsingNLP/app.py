@@ -5,9 +5,18 @@ import plotly.express as px
 import re
 import sys
 import os
+import nltk
+@st.cache_resource
+def load_nltk_data():
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords')
+        nltk.download('punkt')
+
+load_nltk_data()
 sys.path.append(os.path.abspath("src"))
 from src.preprocessing import preprocessing
-import nltk
 model = joblib.load('Models/best_emotion_model.pkl')
 vectorizer = joblib.load('Models/tfidf_vectorizer.pkl')
 
