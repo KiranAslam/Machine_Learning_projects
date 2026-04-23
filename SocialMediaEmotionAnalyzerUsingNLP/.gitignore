@@ -10,3 +10,6 @@ __pycache__/
 .streamlit/
 Models/*.pkl
 Data/*.csv
+*.pkl
+*.h5
+Models/
