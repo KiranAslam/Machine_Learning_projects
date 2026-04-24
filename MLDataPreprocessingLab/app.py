@@ -75,7 +75,7 @@ def render_logs(logs):
     st.markdown(f"<div class='log-box'>{html}</div>", unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown(f"<div style='padding:0.4rem 0 1.2rem 0;'><div style='font-size:1.1rem;font-weight:700;color:{T['primary']};font-family:IBM Plex Mono,monospace;letter-spacing:0.05em;'> ML PREP LAB</div><div style='font-size:0.67rem;color:{T['text_dim']};margin-top:0.2rem;font-family:IBM Plex Mono,monospace;'>preprocessing pipeline v2</div></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='padding:0.4rem 0 1.2rem 0;'><div style='font-size:1.1rem;font-weight:700;color:{T['primary']};font-family:IBM Plex Mono,monospace;letter-spacing:0.05em;'> ML PREP LAB</div><div style='font-size:0.67rem;color:{T['text_dim']};margin-top:0.2rem;font-family:IBM Plex Mono,monospace;'>preprocessing pipeline </div></div>", unsafe_allow_html=True)
     st.markdown(f"<hr style='border-color:{T['border']};margin:0 0 0.8rem 0;'>", unsafe_allow_html=True)
     for pg, ic in [("Upload"," "),("Audit"," "),("Recommendations"," "),("Pipeline"," "),("Export"," ")]:
         if st.button(f"{ic}  {pg}", key=f"nav_{pg}", use_container_width=True):

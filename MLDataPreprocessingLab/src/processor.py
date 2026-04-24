@@ -27,13 +27,10 @@ class DataProcessor:
         self.processed_df = df.copy()
 
         try:
-            # STEP 0 — Drop Columns
             if 'drop_columns' in config:
                 cols_to_drop = [c for c in config['drop_columns'] if c in self.processed_df.columns]
                 self.processed_df = self.processed_df.drop(columns=cols_to_drop)
                 self.logs.append(f"Dropped {len(cols_to_drop)} columns: {cols_to_drop}.")
-
-            # STEP 0b — Data Type Conversion
             if 'dtype_conversions' in config:
                 for col, new_type in config['dtype_conversions'].items():
                     if col not in self.processed_df.columns:
@@ -50,15 +47,12 @@ class DataProcessor:
                         self.logs.append(f"Converted {col} to {new_type}.")
                     except Exception as e:
                         self.logs.append(f"Warning: Could not convert {col} to {new_type}: {e}")
-
-            # STEP 0c — Feature Engineering
             if 'feature_engineering' in config:
                 for feat in config['feature_engineering']:
                     name    = feat['name']
                     columns = feat['columns']
                     op      = feat['op']
                     try:
-                        # fill nulls with 0 before combining so missing values don't propagate
                         filled = [self.processed_df[c].fillna(0) for c in columns if c in self.processed_df.columns]
                         if not filled:
                             self.logs.append(f"Warning: No valid columns for feature {name}.")
@@ -74,18 +68,12 @@ class DataProcessor:
                         self.logs.append(f"Created feature '{name}' = {expr}.")
                     except Exception as e:
                         self.logs.append(f"Warning: Feature engineering failed for {name}: {e}")
-
-            # STEP 1 — Remove Duplicates
             if config.get('remove_duplicates'):
                 dup_count = self.processed_df.duplicated().sum()
                 self.processed_df = self.processed_df.drop_duplicates()
                 self.logs.append(f"Removed {dup_count} duplicate rows.")
-
-            # handle_mixed_type on full df before split
             cleaner = DataCleaner(self.processed_df)
             self.processed_df = cleaner.handle_mixed_type()
-
-            # STEP 9 — Split (must happen before fitting anything)
             if 'split_params' in config:
                 p = config['split_params']
                 target = p['target']
@@ -103,10 +91,7 @@ class DataProcessor:
             else:
                 self.train_df = self.processed_df.copy()
                 self.test_df  = None
-
-            # STEP 2 — Impute per column
             if 'impute_params' in config:
-                # config is now {col: {strategy, n_neighbors}}
                 for col, p in config['impute_params'].items():
                     if col not in self.train_df.columns:
                         continue
@@ -119,8 +104,6 @@ class DataProcessor:
                         # apply train's fitted imputer to test — no refitting
                         self.test_df[[col]] = fitted_imputer.transform(self.test_df[[col]])
                     self.logs.append(f"Imputed '{col}' using {p['strategy']}.")
-
-            # STEP 3 — Outliers
             if 'outlier_params' in config:
                 p = config['outlier_params']
                 for col in p.get('columns', []):
@@ -130,10 +113,7 @@ class DataProcessor:
                         h2 = OutlierHandler(self.test_df)
                         self.test_df = h2.handle_outliers(col, method=p['method'], action=p['action'])
                 self.logs.append(f"Handled outliers in {len(p.get('columns', []))} columns.")
-
-            # STEP 4 — Encode per column
             if 'encode_params' in config:
-                # config is now {col: {type, ...}}
                 for col, p in config['encode_params'].items():
                     if col not in self.train_df.columns:
                         continue
@@ -174,13 +154,9 @@ class DataProcessor:
                             self.test_df, _ = getattr(enc_test, func_name)(columns=[col])
 
                     self.logs.append(f"Encoded '{col}' using {e_type}.")
-
-            # STEP 5 — Feature Selection
             if 'selection_params' in config:
                 p = config['selection_params']
                 sel_target = p['target']
-
-                # all selection methods require numeric features — warn and drop string cols before selection
                 non_numeric_sel = [
                     c for c in self.train_df.columns
                     if c != sel_target and not pd.api.types.is_numeric_dtype(self.train_df[c])
@@ -217,13 +193,9 @@ class DataProcessor:
                     if self.test_df is not None:
                         self.test_df = self.test_df[self.train_df.columns]
                     self.logs.append(f"Feature selection: {method} applied.")
-
-            # STEP 6 — Balance (train only)
             if 'balance_params' in config:
                 p = config['balance_params']
                 target_col = p['target']
-
-                # SMOTE/ADASYN cannot handle string columns — drop non-numeric non-target cols before balancing
                 non_numeric = [
                     c for c in self.train_df.columns
                     if c != target_col and not pd.api.types.is_numeric_dtype(self.train_df[c])
@@ -237,22 +209,17 @@ class DataProcessor:
                 self.train_df = DataBalancer(self.train_df).balance_data(target_col=target_col, method=p['method'])
                 self.logs.append(f"Balanced training set using {p['method']}.")
 
-            # STEP 7 — Scale
             if 'scale_params' in config:
                 p = config['scale_params']
-                # only scale numeric columns — store exactly which cols were fit so test uses same set
                 train_num_cols = self.train_df.select_dtypes(include='number').columns.tolist()
                 s_train = DataScaler(self.train_df)
                 self.train_df, fitted_scaler = s_train.scale_data(columns=train_num_cols, method=p['method'])
                 if self.test_df is not None and fitted_scaler is not None:
-                    # use the exact same columns the scaler was fit on — not test's own numeric cols
                     test_scale_cols = [c for c in train_num_cols if c in self.test_df.columns]
                     self.test_df[test_scale_cols] = fitted_scaler.transform(self.test_df[test_scale_cols])
                 self.logs.append(f"Applied {p['method']} scaling to {len(train_num_cols)} columns.")
 
-            # STEP 8 — Transform per column
             if 'transform_params' in config:
-                # config is now {col: {type, method?}}
                 for col, p in config['transform_params'].items():
                     if col not in self.train_df.columns:
                         continue
