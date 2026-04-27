@@ -7,7 +7,6 @@ from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer
 class DataCleaner:
     def __init__(self, df):
         self.df = df.copy()
-
     def handle_mixed_type(self):
         for col in self.df.columns:
             if self.df[col].dtype == "object":
@@ -16,7 +15,6 @@ class DataCleaner:
                 except ValueError:
                     pass
         return self.df
-
     def impute_data(self, strategy='knn', columns=None, n_neighbors=5):
         cols_to_fix = columns if columns else self.df.columns.tolist()
         cols_to_fix = [c for c in cols_to_fix if c in self.df.columns]
@@ -56,6 +54,5 @@ class DataCleaner:
         ]
         if not numeric_cols_with_nulls:
             return self.df, None
-
         self.df[numeric_cols_with_nulls] = imputer.fit_transform(self.df[numeric_cols_with_nulls])
         return self.df, imputer
