@@ -42,7 +42,6 @@ class DataEncoder:
         )
         self.df[columns] = oe.fit_transform(self.df[columns])
         return self.df, oe
-
     def binary_encode(self, columns):
         columns = [c for c in columns if c in self.df.columns]
         if not columns:
@@ -50,7 +49,6 @@ class DataEncoder:
         encoder = ce.BinaryEncoder(cols=columns)
         self.df = encoder.fit_transform(self.df)
         return self.df, encoder
-
     def frequency_encode(self, columns):
         columns = [c for c in columns if c in self.df.columns]
         freq_maps = {}
@@ -59,14 +57,12 @@ class DataEncoder:
             self.df[col] = self.df[col].map(freq)
             freq_maps[col] = freq
         return self.df, freq_maps
-
     def target_encode(self, columns=None, column=None, target_column=None, smoothing=10):
         col = column if column else (columns[0] if columns else None)
         if col is None or col not in self.df.columns:
             return self.df, None
         if target_column not in self.df.columns:
             return self.df, None
-
         global_mean = self.df[target_column].mean()
         stats = self.df.groupby(col)[target_column].agg(['count', 'mean'])
         smooth_values = (
