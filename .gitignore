@@ -3,3 +3,9 @@ Data/
 *.pyc
 models/*.pkl
 venv/
+
+*.pkl
+*.h5
+*.pickle
+
+Data/
