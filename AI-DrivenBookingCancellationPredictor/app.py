@@ -7,9 +7,11 @@ st.set_page_config(page_title="Hotel Booking Cancellation Predictor", layout="wi
 
 @st.cache_resource
 def load_model():
-    return joblib.load('models/booking_cancellation_predictor.pkl')
 
-model = load_model()
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(BASE_DIR, 'models', 'booking_cancellation_predictor.pkl')
+    
+    return joblib.load(model_path)
 st.title("Hotel Booking Cancellation Predictor")
 st.markdown("Predict the likelihood of a booking cancellation to protect your revenue.")
 st.divider()
