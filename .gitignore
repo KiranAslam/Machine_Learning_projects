@@ -2,5 +2,4 @@ Data/
 **/__pycache__/
 *.pyc
 venv/
-
 *.h5
