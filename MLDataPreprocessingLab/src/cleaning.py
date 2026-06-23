@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer
 
-
 class DataCleaner:
     def __init__(self, df):
         self.df = df.copy()
