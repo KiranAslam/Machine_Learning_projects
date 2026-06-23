@@ -15,7 +15,6 @@ T = {
     "info": "#4DA3FF", "border": "#1E2840",
     "log_bg": "#070B14", "log_text": "#00FF88", "accent": "#7B61FF",
 }
-
 def inject_css():
     st.markdown(f"""<style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
@@ -63,13 +62,10 @@ for k,v in DEFAULTS.items():
     if k not in st.session_state: st.session_state[k] = v
 
 inject_css()
-
 def mcard(label, value, sub=""):
     return f"<div class='mcard'><div class='mlabel'>{label}</div><div class='mvalue'>{value}</div>{'<div class=msub>'+sub+'</div>' if sub else ''}</div>"
-
 def sec(title): st.markdown(f"<div class='sec-header'>{title}</div>", unsafe_allow_html=True)
 def divider(): st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
-
 def render_logs(logs):
     html = "".join(f'<div class="{"log-err" if "Error" in l else "log-warn" if "Warning" in l else ""}">&gt; {l}</div>' for l in logs)
     st.markdown(f"<div class='log-box'>{html}</div>", unsafe_allow_html=True)
